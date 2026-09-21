@@ -24,7 +24,7 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  test: 
     name: Test
     runs-on: ubuntu-latest
 
@@ -43,7 +43,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-     steps:
+    steps:
       - name: Check out the repository
         uses: actions/checkout@v4
 
