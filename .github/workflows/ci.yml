@@ -132,3 +132,6 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:${{ github.sha }}
             ghcr.io/${{ github.repository }}:latest
+          # Reuse unchanged layers (npm ci, base image) across runs.
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
