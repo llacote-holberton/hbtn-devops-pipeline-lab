@@ -76,8 +76,18 @@ jobs:
       - name: Lint the sources
         run: npm run lint
 
-      - name: Run the unit tests
-        run: npm run test:unit
+      # One run of the whole suite (unit + integration), so a single JUnit file
+      # covers every test instead of the second run overwriting the first.
+      - name: Run the test suite
+        env:
+          JEST_JUNIT_OUTPUT_DIR: ./reports
+        run: npm test -- --reporters=default --reporters=jest-junit
 
-      - name: Run the integration tests
-        run: npm run test:integration
+      # always(): the report matters most when the tests have just failed.
+      - name: Upload the test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: reports/
+          retention-days: 7
