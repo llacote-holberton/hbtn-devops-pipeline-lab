@@ -43,6 +43,11 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    # Steps run on the runner host, so the service is reached through its
+    # published port on localhost, not through the "postgres" service name.
+    env:
+      DATABASE_URL: postgres://pipeline:pipeline@localhost:5432/pipeline
+
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
