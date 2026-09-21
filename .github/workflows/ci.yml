@@ -58,6 +58,18 @@ jobs:
           # NodeJS 20 is deprecated, raises a warning of "forced update to Node 24".
           node-version: '24'
 
+      # Caches npm's download cache, not node_modules: `npm ci` still installs
+      # the exact tree from the lock file, it only downloads less. A lock-file
+      # change produces a new exact key; the prefix still restores the most
+      # recent cache for this OS as a starting point.
+      - name: Cache npm downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
       - name: Install dependencies
         run: npm ci
 
